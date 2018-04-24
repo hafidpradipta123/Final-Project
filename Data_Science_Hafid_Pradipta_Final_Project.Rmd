@@ -8,11 +8,16 @@ output:
   html_document: default
 ---
 
+##Summary
+
+Data scientist are the field where most of the employee has a higher degree such as Master of Doctoral degree. They are mostly 26-45 years old. This field pays well with most of the employee get six digits salary. Most of them are from computer science major, but some employees come from social science. They learn to be data scientist by courses both online and university. They said that doing projects are the most useful and popular method to master this field.  They choose this field because they love to learn, and they get paid well. Four important skills in this field are Python, Statistical, R, and Big Data. Their most significant challenge is Dirty Data. They mostly used Data Visualization, Cross-Validation, and Classification method on their job. 
+
 
 
 ##Introduction
 Kaggle conducted an industry-wide survey that receives 16,716 usable respondents from 171 countries and territories. The study was live from August 7th to August 25th.
-The dataset contains 228 variables. However, some of the variables are the extension of one information. For example, all variables started with WorkToolsFrequency refers to what kind of the work tools that the employee often used for their job.
+The dataset contains 228 variables. However, some of the variables are the extension of one information. For example, all variables started with WorkToolsFrequency refers to what kind of the work tools that the employee often used for their job. I will use this dataset from the following website https://www.kaggle.com/kaggle/kaggle-survey-2017. 
+
 
 In general, this dataset contains several groups of variables:
 
@@ -101,7 +106,15 @@ results_names[results_names == "WorkMethodsFrequencyCross-Validation"] <- "WorkM
 
 names(results) <- results_names
 clean <- results[,c(1:15,35,36,50:59,66:68,74:75,132,167:173,197:228)]
-levels(results$CurrentJobTitleSelect)
+results$FormalEducation[results$FormalEducation == "Master's degree"] <- "Master"
+results$FormalEducation[results$FormalEducation == "MBachelor's degree"] <- "Bachelor"
+results$FormalEducation[results$FormalEducation == "Doctoral degree"] <- "Doctoral"
+results$FormalEducation[results$FormalEducation == "Some college/university study without earning a bachelor's degree"] <- "Non degree"
+results$FormalEducation[results$FormalEducation == "Professional degree"] <- "Prof Degree"
+results$FormalEducation[results$FormalEducation == "I prefer not to answer"] <- "Not Answer"
+results$FormalEducation[results$FormalEducation == "I did not complete any formal education past high school"] <- "High School"
+results$FirstTrainingSelect[results$FirstTrainingSelect == "Online courses (coursera, udemy, edx, etc.)"] <- "Online Courses"
+
 ```
 
 #Visualization of Job title and other variables
@@ -137,6 +150,7 @@ results %>%
         theme(axis.title.x = element_text(margin = margin(t=8)),
               axis.text.x = element_text(angle = 325, hjust = 0))
 ```
+
 
 Based on the graph, most of the title in the data scientist fields are dominated by Master's degree with the proportion around 45%. Software developer, Data Analyst, and Database Engineer are the title that employs most of the Bachelor's degree. However, around 57% of the scientist and researchers are Doctoral Degree. It seems that this position requires a high level of education. 
 
@@ -539,6 +553,3 @@ result2a
 This graph goes hand in hand with the previous graph about Job Skill Importance. It is obvious of python is an important skill, they will use python to work. 
 
 
-##Conclusion
-
-Data scientist are the field where most of the employee has a higher degree such as Master of Doctoral degree. They are mostly 26-45 years old. This field pays well with most of the employee get six digits salary. Most of them are from computer science major, but some employees come from social science. They learn to be data scientist by courses both online and university. They said that doing projects are the most useful and popular method to master this field.  They choose this field because they love to learn, and they get paid well. Four important skills in this field are Python, Statistical, R, and Big Data. Their most significant challenge is Dirty Data. They mostly used Data Visualization, Cross-Validation, and Classification method on their job. 

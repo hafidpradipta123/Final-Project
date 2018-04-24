@@ -6,6 +6,9 @@
 # 
 #    http://shiny.rstudio.com/
 #
+#install.packages(c("plotly","shiny","ggplot2","tibble","readr","forcats","tidyverse"))
+
+
 library(plotly)
 library(shiny)
 library(ggplot2)
@@ -60,14 +63,41 @@ names(results) <- results_names
 results
 names(results)#theme
 clean <- results[,c(1:15,35,36,50:59,66:68,74:75,132,167:173,197:228)]
+results$FormalEducation
+results$FormalEducation[results$FormalEducation == "Master's degree"] <- "Master"
+results$FormalEducation[results$FormalEducation == "MBachelor's degree"] <- "Bachelor"
+results$FormalEducation[results$FormalEducation == "Doctoral degree"] <- "Doctoral"
+results$FormalEducation[results$FormalEducation == "Some college/university study without earning a bachelor's degree"] <- "Non degree"
+results$FormalEducation[results$FormalEducation == "Professional degree"] <- "Prof Degree"
+results$FormalEducation[results$FormalEducation == "I prefer not to answer"] <- "Not Asnwer"
+results$FormalEducation[results$FormalEducation == "I did not complete any formal education past high school"] <- "High School"
+
+
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
 
 
-output$contents <- renderPrint({
-  return(summary(hr()))
+output$text1 <- renderPrint({
+  if (input$rbutt=="tedu"){
+   paste(" Based on the graph, most of the title in the data scientist fields are dominated by Master's degree with the proportion around 45%. Software developer, Data Analyst, and Database Engineer are the title that employs most of the Bachelor's degree. However, around 57% of the scientist and researchers are Doctoral Degree. It seems that this position requires a high level of education. ") 
+  }
+  if (input$rbutt=="tedu"){
+    print("The graph of job title and learning time seems not very informative for me. Most of the job title requires less than one year to be this position. However, most of the data scientists have Master's Degree a who needs at least one year of education. There are a little portion of the employees in scientist/researcher that require 10-15 years of learning time and it kind of make sense to me. I would not take a look more in-depth at this graph and move on to other variables. ")}
+  if (input$rbutt=="tlt"){
+    print("Most of the people in data scientist field are between 26-35 years old. This group age is a productive age, and the starting point of 26 is exciting because most of the Bachelor's Degree student will graduate around 22-23 years old. If they continue their Master's Degree for 1 or 2 years, they will be employed at 24-25 years old. I am wondering whether it is their first job or they do something else first and become data scientist later. ")}
+  if (input$rbutt=="tage"){
+    print("The visualization of Job Title and Salary shows that on average,  data scientists get high compensation. On average 40% of the salary for all title are six digits salary. For a programmer, half of the wage is below median household salary in the US which is 55k. I am curious what type of programmers they are.")}
+  if (input$rbutt=="tft"){
+    print("This visualization shows what kind of style of learning that they adopt when they first learn to be a data scientist. Interesting information in here is that on average less than 10% of all title learn the materials from work. It means that most of the data scientist already know what they are doing their job. In other words, what they learn to do is their job. Furthermore, most of them learn from Online courses with a small difference from different categories which are self-taught and university courses. The good news in here is that at least the materials to be a data scientist are on the internet")}
+  if (input$rbutt=="tpe"){
+    print("I am curious to see whether there is an inclination of parent's education that makes them a data scientist. I can say that most of their parents are entirely educated that has bachelor and master's degree. The graph is too broad to conclude any information.")}
+  if (input$rbutt=="tjs"){
+    print("Based on the graph of Job Satisfaction, most of the data scientists are satisfied with the score around 6.5 out of 9.9.")}
+  
+  if (input$rbutt=="tma"){
+    print("Most of the people in data scientist field come from computer science or information technology major except for those who work as a statistician. They are from math or statistics major which are quite make sense. Even though most of them are form computer science, there are around 10% people from psychology or social science that become a data scientist.")}
 })
 
   output$plot1 <- renderPlotly({
@@ -82,13 +112,13 @@ output$contents <- renderPrint({
         mutate(freq = n/sum(n)*100) %>% 
         ggplot(aes(x = title, y = freq, fill = Education, label = ifelse(freq>8, round(freq),"")))+
         ggtitle("Education vs Job Title")+
-        labs(x = "Job Title", y= "Frequency (%)")+
+        labs(y= "Frequency (%)")+
         geom_bar(stat = "identity", position = position_stack())+
         geom_text(position = position_stack(vjust = 0.5))+
         theme1+
         theme(legend.title=element_blank())+
         theme(legend.position="right")+
-        theme(axis.title.x = element_text(margin = margin(t=8)),
+        theme(axis.title.x = element_blank(),
               axis.text.x = element_text(angle = 325, hjust = 0))
       
       result <- ggplotly(a)
@@ -209,7 +239,6 @@ output$contents <- renderPrint({
         geom_bar(stat = "identity", position = position_stack())+
         geom_text(position = position_stack(vjust = 0.5))+
         theme1+
-        theme(legend.title=element_blank())+
         theme(axis.title.x = element_text(margin = margin(t=8)),
               axis.text.x = element_text(angle = 325, hjust = 0))
     result <- ggplotly(a)
@@ -238,7 +267,26 @@ output$contents <- renderPrint({
     
     print(result)
   })
-  
+   output$text2 <- renderPrint({
+     if( input$rbutt2 == "lp"){
+       print("Based on the visualization above, Projects are very useful and very popular to learn about data scientist. Personally, I agree with this poll because I learn a lot when I do something. Furthermore, it's followed by Courses, Kaggle and SO. It seems that online community and projects are the best combinations to learn to be a data scientist.")}
+     if( input$rbutt2 == "jf"){
+       print("Surprisingly, learning becomes a significant factor for data scientists to remain on their job. It follows by Salary, languages, and Office. I don't get about the language, but from what I extract, it seems that data scientist loves to learn and get paid well.")
+     }
+     if( input$rbutt2 == "jsi"){
+       print("According to the survey, it is important to have skill in python as a data scientist followed by statistical skill. Then it is good to know about R, SQL, BigData, and Visualization. Technically a data scientist has to know everything. However, from this graph we can choose which one to start and how are we going to proceed to the next skill. In contrast, the degree is not important for this field with the score 0.58.")
+     }
+     if( input$rbutt2 == "wc"){
+       print("When it comes to the challenge as a data scientist, dirty data is the most frequent and most challenging in this position. Talent is less challenging but quite frequent and similar to the Hiring funds. I am curious for those who answer Other Select. This category is quite challenging even though it is not often.")
+     }
+     if( input$rbutt2 == "wm"){
+       print("Based on the work method importance and frequency. Data visualization is the most important and most frequently used by data scientist followed by Cross-Validation. It kind of make sense because data visualization and cross-validation are easy to understand. A graph is easy to read, and the cross-validation method compares between prediction rate or means squared error. Interesting information in this graph is most of the method used by data scientist are classification methods such as logistic regression, decision tree, and random forest. I don't know whether Kaggle didn't ask them about the quantitative method or they don't use a quantitative method such as regression on their job.")
+     }
+     if( input$rbutt2 == "wt"){
+       print("This graph goes hand in hand with the previous graph about Job Skill Importance. It is obvious of python is an important skill, they will use python to work.")
+     }
+     
+   })
   output$plot2 <- renderPlotly({
     
     
@@ -513,4 +561,9 @@ output$contents <- renderPrint({
     print(result3)
   })
 })
+
+rsconnect::setAccountInfo(name='hafidpradipta',
+                          token='BBE53952BC403B7F474AC06B0C47FB89',
+                          secret='sPB7yGK8xJmh2Xytpa1+9Nisfsj2hvwcrTTx2gbM')
+
 
