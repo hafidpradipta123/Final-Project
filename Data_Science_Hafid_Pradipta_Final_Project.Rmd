@@ -130,9 +130,10 @@ In the first section, I will compare 16 job titles to figure out what are the ch
  "Software Developer/Software Engineer" "Statistician
 
 
-##Visualization of the Job title and Formal Education
+##Visualization of the Job Title and Formal Education
 
 ```{r job title vs formal education, message = FALSE, warning = FALSE}
+dim(results)
 results %>%
         rename(title = CurrentJobTitleSelect, Education =FormalEducation ) %>% 
         filter(title !="", Education != "") %>% 
@@ -154,7 +155,7 @@ results %>%
 
 Based on the graph, most of the title in the data scientist fields are dominated by Master's degree with the proportion around 45%. Software developer, Data Analyst, and Database Engineer are the title that employs most of the Bachelor's degree. However, around 57% of the scientist and researchers are Doctoral Degree. It seems that this position requires a high level of education. 
 
-##Visualization of the Job title and learning time
+##Visualization of the Job Title and Learning Time
 
 ```{r job title vs learning time, message = FALSE, warning = FALSE}
 results %>%
@@ -178,7 +179,7 @@ results %>%
 The graph of job title and learning time seems not very informative for me. Most of the job title requires less than one year to be this position. However, most of the data scientists have Master's Degree a who needs at least one year of education. There are a little portion of the employees in scientist/researcher that require 10-15 years of learning time and it kind of make sense to me. I would not take a look more in-depth at this graph and move on to other variables. 
 
 
-##Visualization of the job title and age
+##Visualization of the Job Title and Age
 ```{r job title vs salary, message = FALSE, warning = FALSE }
 
  results %>%
@@ -202,7 +203,7 @@ The graph of job title and learning time seems not very informative for me. Most
 
 Most of the people in data scientist field are between 26-35 years old. This group age is a productive age, and the starting point of 26 is exciting because most of the Bachelor's Degree student will graduate around 22-23 years old. If they continue their Master's Degree for 1 or 2 years, they will be employed at 24-25 years old. I am wondering whether it is their first job or they do something else first and become data scientist later. 
 
-##Visualization of the Job title and salary
+##Visualization of the Job Title and Salary
 ```{r,message = FALSE, warning = FALSE }
 results$CompensationAmount <- as.numeric(results$CompensationAmount)
 results %>% 
@@ -248,7 +249,7 @@ results %>%
 
 This visualization shows what kind of style of learning that they adopt when they first learn to be a data scientist. Interesting information in here is that on average less than 10% of all title learn the materials from work. It means that most of the data scientist already know what they are doing their job. In other words, what they learn to do is their job. Furthermore, most of them learn from Online courses with a small difference from different categories which are self-taught and university courses. The good news in here is that at least the materials to be a data scientist are on the internet
 
-##Visualization of the Job title and Parents Education
+##Visualization of the Job Title and Parents Education
 ```{r parent edu, message = FALSE, warning = FALSE}
 results %>%
         rename(title = CurrentJobTitleSelect, pedu =ParentsEducation ) %>% 
@@ -269,14 +270,14 @@ results %>%
 
 I am curious to see whether there is an inclination of parent's education that makes them a data scientist. I can say that most of their parents are entirely educated that has bachelor and master's degree. The graph is too broad to conclude any information.
 
-##Visualization of the Job title and Job Satisfaction
+##Visualization of the Job Title and Job Satisfaction
 ```{r jobsatifaction, message = FALSE, warning = FALSE }
 
 
 rename1 <- which(results$JobSatisfaction=="10 - Highly Satisfied")
      results$JobSatisfaction[rename1] <-  "9.9 - Highly Satisfied" 
      results$JobSatisfaction <- as.factor(results$JobSatisfaction)
-     a <- results %>%
+     results %>%
         rename(JobTitle = CurrentJobTitleSelect ) %>% 
         filter(JobTitle !="", JobSatisfaction != "") %>% 
         group_by(JobTitle, JobSatisfaction) %>% 
@@ -296,7 +297,7 @@ rename1 <- which(results$JobSatisfaction=="10 - Highly Satisfied")
 
 Based on the graph of Job Satisfaction, most of the data scientists are satisfied with the score around 6.5 out of 9.9.
 
-##Visualization of the Job title and Major
+##Visualization of the Job Title and Major
 ```{r, major, message = FALSE, warning = FALSE}
 
 results %>% 
